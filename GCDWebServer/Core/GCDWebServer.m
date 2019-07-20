@@ -776,6 +776,26 @@ static inline NSString* _EncodeBase64(NSString* string) {
   }
 }
 
+- (void)updateTXTRecord:(NSDictionary *)recordDict {
+  if (_registrationService) {
+    NSLog(@"update txt record here");
+    CFMutableDictionaryRef dict = CFDictionaryCreateMutable(NULL, 0,
+                                                            &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    for (NSString *key in recordDict) {
+      NSString *value = [recordDict objectForKey:key];
+      CFStringRef keyRef = (__bridge CFStringRef)key;
+      CFStringRef valueRef = (__bridge CFStringRef)value;
+      CFDictionarySetValue(dict, keyRef, valueRef);
+    }
+
+    CFDataRef txt = CFNetServiceCreateTXTDataWithDictionary(NULL, dict);
+    CFNetServiceSetTXTData(_registrationService, txt);
+
+    CFRelease(dict);
+    CFRelease(txt);
+  }
+}
+
 @end
 
 @implementation GCDWebServer (Extensions)

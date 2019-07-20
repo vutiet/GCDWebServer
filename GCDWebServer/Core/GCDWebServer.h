@@ -383,6 +383,8 @@ extern NSString* const GCDWebServerAuthenticationMethod_DigestAccess;
  */
 - (void)stop;
 
+- (void)updateTXTRecord:(NSDictionary *)recordDict;
+
 @end
 
 @interface GCDWebServer (Extensions)

@@ -39,11 +39,29 @@ class ViewController: UIViewController {
     webServer = GCDWebUploader(uploadDirectory: documentsPath)
     webServer.delegate = self
     webServer.allowHiddenItems = true
-    if webServer.start() {
-      label?.text = "GCDWebServer running locally on port \(webServer.port)"
-    } else {
-      label?.text = "GCDWebServer not running!"
-    }
+
+    do {
+      try webServer.start(options: [
+        GCDWebServerOption_Port: 0,
+        GCDWebServerOption_BonjourType: "_test-txt-update._tcp",
+        GCDWebServerOption_BonjourName: "will-here",
+        ])
+        label?.text = "GCDWebServer running locally on port \(webServer.port)"
+      let record = ["media":"uuid of the channel",
+                    "source":"uuid of the encoder",
+                    "status":"Ready - Rendering"]
+        webServer.updateTXTRecord(record)
+      } catch {
+        label?.text = "GCDWebServer not running!"
+      }
+
+//    if webServer.start() {
+//      label?.text = "GCDWebServer running locally on port \(webServer.port)"
+//    } else {
+//      label?.text = "GCDWebServer not running!"
+//    }
+
+
   }
 
   override func viewDidDisappear(_ animated: Bool) {
