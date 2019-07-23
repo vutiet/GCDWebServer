@@ -777,7 +777,7 @@ static inline NSString* _EncodeBase64(NSString* string) {
 }
 
 - (void)updateTXTRecord:(NSDictionary *)recordDict {
-  if (_registrationService) {
+  if (_resolutionService) {
     NSLog(@"update txt record here");
     CFMutableDictionaryRef dict = CFDictionaryCreateMutable(NULL, 0,
                                                             &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -789,7 +789,7 @@ static inline NSString* _EncodeBase64(NSString* string) {
     }
 
     CFDataRef txt = CFNetServiceCreateTXTDataWithDictionary(NULL, dict);
-    CFNetServiceSetTXTData(_registrationService, txt);
+    CFNetServiceSetTXTData(_resolutionService, txt);
 
     CFRelease(dict);
     CFRelease(txt);
